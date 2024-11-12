@@ -1,0 +1,39 @@
+services:
+  webserver:
+    container_name: webserver
+    build: ./web
+    ports:
+      - 8080:80
+    volumes:
+      - ./web/src/:/var/www/html/
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_DATABASE=idor
+      - MYSQL_USER=web
+      - MYSQL_PASSWORD=web@server123
+    #SOC for web server
+    extra_hosts:
+      - "ubuntu.kibana.local:192.168.56.150"
+      - "ubuntu.elasticsearch.local:192.168.56.150"
+  mysql:
+    container_name: mysql
+    image: mysql:latest
+    hostname: mysql
+    volumes:
+      - ./sql/:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=Checkpass@123123
+      - MYSQL_DATABASE=idor
+      - MYSQL_USER=web
+      - MYSQL_PASSWORD=web@server123
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+    ports:
+      - 8081:80
+    extra_hosts:
+      - "ubuntu.kibana.local:192.168.56.150"
+      - "ubuntu.elasticsearch.local:192.168.56.150"
