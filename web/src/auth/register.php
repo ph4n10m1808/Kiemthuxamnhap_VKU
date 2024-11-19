@@ -18,7 +18,9 @@ if (isset($_POST['submit'])) {
 
     // Đường dẫn upload
     $uploadDir = "../uploads/";
-    $picturename = $image['name'] . time() . '.' . pathinfo($image['name'], PATHINFO_EXTENSION);
+    // Đặt lại tên file tải lên
+    $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
+    $picturename = pathinfo($image['name'], PATHINFO_FILENAME) . '-' . time() . '.' . $extension;
     $uploadFile = $uploadDir . $picturename;
 
     $sql = "SELECT * FROM users WHERE username = ?";
